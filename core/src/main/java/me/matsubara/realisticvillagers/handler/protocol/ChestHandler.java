@@ -42,6 +42,10 @@ public class ChestHandler extends SimplePacketListenerAbstract {
     public void onPacketPlaySend(@NotNull PacketPlaySendEvent event) {
         if (event.isCancelled() || !listenTo.contains(event.getPacketType())) return;
 
+        // PacketEvents may dispatch outgoing packets from Netty. Every path below
+        // reads Bukkit world or block-entity state, which is only safe on the main thread.
+        if (!Bukkit.isPrimaryThread()) return;
+
         Player player = (Player) event.getPlayer();
 
         World world;
