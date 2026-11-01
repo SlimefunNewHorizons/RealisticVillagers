@@ -82,11 +82,20 @@ public class ChestHandler extends SimplePacketListenerAbstract {
 
         WrapperPlayServerBlockAction blockAction = new WrapperPlayServerBlockAction(event);
 
-        Material material = SpigotConversionUtil.toBukkitBlockData(blockAction.getBlockType()).getMaterial();
+        Material material;
+        try {
+            material = SpigotConversionUtil.toBukkitBlockData(blockAction.getBlockType()).getMaterial();
+        } catch (Throwable t) {
+            return;
+        }
         if (material != Material.CHEST) return;
 
         // We only want to cancel the close animation if a villager has the inventory open.
-        boolean open = /*packet.getIntegers().readSafely(1) == 1*/ blockAction.getBlockType().isOpen();
+        // In Minecraft BlockAction for chests, actionId 1 (open/close) uses actionData for viewer count.
+        // actionData > 0 indicates opening/open, actionData == 0 indicates closing.
+        // Note: blockAction.getBlockType().isOpen() throws NullPointerException on chests
+        // because chest blockstates do not contain an "open" block property.
+        boolean open = blockAction.getActionData() > 0;
         if (open) return;
 
         Vector3i pos = blockAction.getBlockPosition();
