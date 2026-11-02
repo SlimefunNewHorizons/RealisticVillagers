@@ -330,6 +330,7 @@ public final class RealisticVillagers extends JavaPlugin {
         PacketEvents.getAPI().terminate();
 
         if (converter == null || tracker == null) return;
+        if (!Bukkit.isPrimaryThread()) return;
 
         for (World world : Bukkit.getWorlds()) {
             for (Villager villager : world.getEntitiesByClass(Villager.class)) {
