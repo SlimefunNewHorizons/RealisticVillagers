@@ -42,11 +42,11 @@ public class ChestHandler extends SimplePacketListenerAbstract {
     public void onPacketPlaySend(@NotNull PacketPlaySendEvent event) {
         if (event.isCancelled() || !listenTo.contains(event.getPacketType())) return;
 
-        // PacketEvents may dispatch outgoing packets from Netty. Every path below
-        // reads Bukkit world or block-entity state, which is only safe on the main thread.
-        if (!Bukkit.isPrimaryThread()) return;
-
         Player player = (Player) event.getPlayer();
+
+        // PacketEvents may dispatch outgoing packets from Netty. Bukkit world and
+        // block-entity state is only safe on the main thread.
+        if (event.getPacketType() != PacketType.Play.Server.BLOCK_ACTION && !Bukkit.isPrimaryThread()) return;
 
         World world;
         try {
@@ -103,17 +103,26 @@ public class ChestHandler extends SimplePacketListenerAbstract {
         if (open) return;
 
         Vector3i pos = blockAction.getBlockPosition();
-        Location location = new Location(world, pos.x, pos.y, pos.z);
+        Vector vector = new Vector(pos.x, pos.y, pos.z);
 
-        Block block = world.getBlockAt(location);
-        if (block.getType() != Material.CHEST) return;
-
-        Vector vector = location.toVector();
-
+        // Chest maps are concurrent, so the close animation can be cancelled from Netty.
         ChestManager chestManager = plugin.getChestManager();
         if (chestManager.getVillagerChests().containsKey(vector)) {
             event.setCancelled(true);
         }
+
+        if (!chestManager.getPlayerChests().containsKey(vector)) return;
+
+        if (Bukkit.isPrimaryThread()) {
+            cleanViewers(world, vector);
+        } else if (plugin.isEnabled()) {
+            plugin.getServer().getScheduler().runTask(plugin, () -> cleanViewers(world, vector));
+        }
+    }
+
+    private void cleanViewers(@NotNull World world, @NotNull Vector vector) {
+        Block block = world.getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
+        if (block.getType() != Material.CHEST) return;
 
         Map<Vector, Set<UUID>> playerChests = plugin.getChestManager().getPlayerChests();
 
