@@ -1,3 +1,9 @@
+<!-- credits:start -->
+> **Credits & license.** Port and maintenance by [JackStar6677-1](https://github.com/JackStar6677-1) and [DrakesCraft Labs](https://github.com/SlimefunNewHorizons). Original authors: [aematsubara](https://github.com/aematsubara) (upstream [aematsubara/RealisticVillagers](https://github.com/aematsubara/RealisticVillagers)), [aematsubara](https://github.com/aematsubara), [Ghost-chu](https://github.com/Ghost-chu). Upstream license: **GNU General Public License v3.0** (see [LICENSE](LICENSE)). Details: [docs/UPSTREAM_ATTRIBUTION.md](docs/UPSTREAM_ATTRIBUTION.md) · Policy: [Rights & Attribution](https://github.com/SlimefunNewHorizons/.github/blob/main/RIGHTS_AND_ATTRIBUTION.md). Independent community project, not affiliated with or endorsed by the original authors or the official Slimefun team.
+>
+> **Créditos y licencia.** Port y mantenimiento por [JackStar6677-1](https://github.com/JackStar6677-1) y [DrakesCraft Labs](https://github.com/SlimefunNewHorizons). Autores originales: [aematsubara](https://github.com/aematsubara) (upstream [aematsubara/RealisticVillagers](https://github.com/aematsubara/RealisticVillagers)), [aematsubara](https://github.com/aematsubara), [Ghost-chu](https://github.com/Ghost-chu). Licencia original: **GNU General Public License v3.0**. Detalle en [docs/UPSTREAM_ATTRIBUTION.md](docs/UPSTREAM_ATTRIBUTION.md).
+<!-- credits:end -->
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/SlimefunNewHorizons/RealisticVillagers/master/banner.svg" width="100%" alt="REALISTIC VILLAGERS animated banner" />
 </p>
